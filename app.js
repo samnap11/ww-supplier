@@ -50,7 +50,6 @@ processTransaction = async function (req, res, next) {
                 console.log(result);
                 cost = result[0].harga_satuan;
                 console.log("cost: ", cost);
-                // totalCost += cost * supplyAmount;
                 resolve(cost * amount);
             })
         })
@@ -99,7 +98,8 @@ processTransaction = async function (req, res, next) {
 // c. Apabila uang tidak cukup, layanan memberikan respon jumlah uang yang kurang
 //    agar transaksi berhasil beserta status gagal.
 // (Note)
-// Request dikirim dalam format JSON dalam bentuk berikut:
+// a. Middleware processTransaction digunakan untuk handle transaction logic
+// b. Request dikirim oleh client ke API dalam format JSON dalam bentuk berikut:
 // {
 //     buyList: [
 //         {nama: susu, amount: 10},
@@ -120,7 +120,10 @@ app.post("/api/txn", processTransaction, (req, res) => {
 // Memberikan daftar bahan yang dijual
 // Menerima request dari factory management program
 // Mengembalikan data berisi daftar bahan-bahan yang ada
-// Bisa beserta harga, dan bisa tanpa harga (ide: either dikirim via request di json, atau ditangani client aja langsung)
+// Bisa beserta harga, dan bisa tanpa harga 
+
+// TODO: nentuin di mana info pake harga atau ngga itu diletakkan, 
+//      (ide: either dikirim via request di json, atau ditangani si client aja langsung)
 app.get("/bahan", (req, res) => {
     const query = 'SELECT * FROM bahan';
     db_con.query(query, function(err, result) {
