@@ -6,7 +6,9 @@ const transactionsRouter = require('./routes/transaction');
 const morgan = require('morgan');
 
 const app = express();
+const cors = require('cors');
 
+app.use(cors());
 app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use('/supply', supplyRouter);
